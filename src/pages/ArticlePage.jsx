@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Clock, User, Share2, BookOpen } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { getArticleById } from '../utils/data';
 
 const ArticlePage = () => {
@@ -8,7 +8,7 @@ const ArticlePage = () => {
 
   if (!article) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">Article Not Found</h1>
           <p className="text-muted-foreground">The article you're looking for doesn't exist.</p>
@@ -18,78 +18,102 @@ const ArticlePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <article className="bg-card rounded-lg border border-border overflow-hidden">
+    <div className="max-w-4xl mx-auto px-6 py-12">
+      <article className="bg-card border border-card-border rounded overflow-hidden">
         {/* Article Header */}
-        <header className="p-8 border-b border-border">
+        <header className="p-8 border-b border-card-border">
           <div className="mb-4">
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               {article.category}
             </span>
           </div>
           
-          <h1 className="text-3xl md:text-4xl font-bold text-card-foreground mb-4 leading-tight">
+          <h1 className="text-3xl font-bold text-card-foreground mb-6 leading-tight">
             {article.title}
           </h1>
-          
-          <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-            {article.description}
-          </p>
 
           {/* Article Meta */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <User className="h-4 w-4" />
+          <div className="flex items-center justify-between text-sm text-muted-foreground mb-6">
+            <div className="flex items-center space-x-4">
               <span className="font-medium">{article.author}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4" />
+              <span>•</span>
               <span>{article.publishedAt}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <BookOpen className="h-4 w-4" />
-              <span>5 min read</span>
-            </div>
-            <button className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors">
+            <button className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Share2 className="h-4 w-4" />
               <span>Share</span>
             </button>
           </div>
         </header>
 
+        {/* Article Image */}
+        <div className="h-80 bg-muted"></div>
+
         {/* Article Content */}
         <div className="p-8">
           <div className="prose prose-lg max-w-none">
-            <p className="text-card-foreground leading-relaxed mb-6">
-              This is a sample article for the Newsly prototype. In a real implementation, this would contain the full article content retrieved from a content management system or database.
+            <p className="text-card-foreground leading-relaxed mb-6 text-lg">
+              {article.description}
             </p>
             
             <p className="text-card-foreground leading-relaxed mb-6">
-              The article would include rich text formatting, embedded media, quotes from sources, and comprehensive coverage of the topic. For this demonstration, we're showing how the layout and styling would appear with actual content.
+              Despite a dramatic opening to the season, Joe Smith, Marvine was originally a mid-tier prospect with above-average peripherals. So if you're looking for a way to unwind this summer, why not pick up a few books and escape into some captivating stories?
             </p>
-
-            <blockquote className="border-l-4 border-primary pl-6 my-8 italic text-lg text-muted-foreground">
-              "This is an example of how quotes would be displayed in the article layout, with proper styling and visual hierarchy."
-            </blockquote>
 
             <p className="text-card-foreground leading-relaxed mb-6">
-              Additional paragraphs would continue the story, providing in-depth analysis, background information, and expert opinions on the subject matter. The layout is designed to be readable and engaging for users across all device sizes.
+              It is more than this though: Marvine's spectacular early season might have slightly over-estimated his potential and left Sixers fans with the expectation of more dominance. This is still very concerning at this point.
             </p>
 
-            <h2 className="text-2xl font-bold text-card-foreground mb-4 mt-8">
-              Key Points
-            </h2>
-
-            <ul className="list-disc list-inside space-y-2 text-card-foreground mb-6">
-              <li>Important fact or development related to the story</li>
-              <li>Supporting evidence or data points</li>
-              <li>Expert analysis or commentary</li>
-              <li>Implications for readers or broader industry</li>
-            </ul>
-
-            <p className="text-card-foreground leading-relaxed">
-              The article would conclude with a summary of the key points and any next steps or developments readers should watch for. This helps provide closure while keeping readers engaged with ongoing coverage.
+            <p className="text-card-foreground leading-relaxed mb-6">
+              It is not easy to find big Marvine's progress thus far this May, Kevin Edwards Sixers fans from last year are now being found to be true: a good start might not be a indicator about his remaining play.
             </p>
+
+            <p className="text-card-foreground leading-relaxed mb-6">
+              Regardless of how the rest of Marvine's tenure playing here, he has managed to shed doubts of his overall value with his early-season excellence with Marvine having been a pivotal performer alongside early games during spring training.
+            </p>
+          </div>
+        </div>
+
+        {/* Comments Section */}
+        <div className="border-t border-card-border p-8">
+          <h3 className="text-lg font-bold text-card-foreground mb-6">Comments</h3>
+          
+          <div className="space-y-6">
+            <div className="border-b border-card-border pb-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-8 h-8 bg-muted rounded-full"></div>
+                <span className="font-medium text-sm">Tom H.</span>
+              </div>
+              <p className="text-sm text-muted-foreground">Great article! Really enjoyed reading this perspective.</p>
+              <div className="flex items-center space-x-4 mt-2">
+                <button className="flex items-center space-x-1 text-xs text-muted-foreground">
+                  <span>👍</span>
+                  <span>12</span>
+                </button>
+                <button className="flex items-center space-x-1 text-xs text-muted-foreground">
+                  <span>💬</span>
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-8 h-8 bg-muted rounded-full"></div>
+                <span className="font-medium text-sm">Alex M.</span>
+              </div>
+              <p className="text-sm text-muted-foreground">Interesting analysis. Looking forward to more updates on this story.</p>
+              <div className="flex items-center space-x-4 mt-2">
+                <button className="flex items-center space-x-1 text-xs text-muted-foreground">
+                  <span>👍</span>
+                  <span>8</span>
+                </button>
+                <button className="flex items-center space-x-1 text-xs text-muted-foreground">
+                  <span>💬</span>
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </article>

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Clock, User } from 'lucide-react';
 
 const ArticleCard = ({ article, className = "", pendoId, isHero = false }) => {
   return (
@@ -8,36 +7,38 @@ const ArticleCard = ({ article, className = "", pendoId, isHero = false }) => {
       data-pendo={pendoId}
       className={`group block ${className}`}
     >
-      <article className={`bg-card border border-border rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg hover:bg-card-hover ${isHero ? 'p-6' : 'p-4'}`}>
+      <article className={`bg-card border border-card-border rounded overflow-hidden transition-all duration-200 hover:shadow-sm ${isHero ? 'p-8' : 'p-6'}`}>
+        {/* Image placeholder */}
+        <div className={`bg-muted rounded mb-4 ${isHero ? 'h-64' : 'h-40'}`}></div>
+        
+        {/* Category tag */}
+        {article.category && (
+          <div className="mb-3">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              {article.category}
+            </span>
+          </div>
+        )}
+
         {/* Article content */}
         <div>
-          <h2 className={`font-bold text-card-foreground group-hover:text-primary transition-colors mb-2 ${
-            isHero ? 'text-2xl md:text-3xl' : 'text-lg'
+          <h2 className={`font-bold text-card-foreground group-hover:text-primary transition-colors mb-3 leading-tight ${
+            isHero ? 'text-2xl' : 'text-lg'
           }`}>
             {article.title}
           </h2>
           
-          <p className={`text-muted-foreground mb-4 line-clamp-3 ${
-            isHero ? 'text-base md:text-lg' : 'text-sm'
-          }`}>
-            {article.description}
-          </p>
+          {isHero && (
+            <p className="text-muted-foreground mb-4 leading-relaxed">
+              {article.description}
+            </p>
+          )}
 
           {/* Article metadata */}
-          <div className="flex items-center text-xs text-muted-foreground space-x-4">
-            <div className="flex items-center space-x-1">
-              <User className="h-3 w-3" />
-              <span>{article.author}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Clock className="h-3 w-3" />
-              <span>{article.publishedAt}</span>
-            </div>
-            {article.category && (
-              <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
-                {article.category}
-              </span>
-            )}
+          <div className="text-xs text-muted-foreground">
+            <span className="font-medium">{article.author}</span>
+            <span className="mx-2">•</span>
+            <span>{article.publishedAt}</span>
           </div>
         </div>
       </article>

@@ -13,68 +13,57 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Top row with logo, navigation, and search */}
-        <div className="flex items-center justify-between py-4">
-          {/* Logo */}
+    <header className="bg-card border-b border-border">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Top row with search, logo, and actions */}
+        <div className="flex items-center justify-between py-6">
+          {/* Left: Search */}
+          <form onSubmit={handleSearch} className="flex items-center">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search"
+                data-pendo={pendoIds.navSearch}
+                className="w-48 px-4 py-2 border border-input-border rounded bg-input text-sm focus:outline-none focus:border-ring"
+              />
+            </div>
+          </form>
+
+          {/* Center: Logo */}
           <Link 
             to="/" 
             data-pendo={pendoIds.navLogo}
-            className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+            className="text-xl font-bold text-foreground"
           >
-            Newsly
+            Logo
           </Link>
 
-          {/* Category Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {categories.map((category) => (
-              <Link
-                key={category}
-                to={`/category/${category}`}
-                data-pendo={pendoIds.navCategory(category)}
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-              >
-                {category}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Search and Technology Link */}
-          <div className="flex items-center space-x-4">
-            <form onSubmit={handleSearch} className="hidden sm:flex items-center">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search news..."
-                  data-pendo={pendoIds.navSearch}
-                  className="pl-10 pr-4 py-2 w-64 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                />
-              </div>
-            </form>
-            
+          {/* Right: Sign In + Subscribe */}
+          <div className="flex items-center space-x-3">
+            <button className="text-sm text-muted-foreground hover:text-foreground">
+              Sign in
+            </button>
             <Link
               to="/category/Technology"
               data-pendo={pendoIds.navTechnologyLink}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="bg-primary text-primary-foreground px-4 py-2 rounded text-sm hover:bg-primary/90 transition-colors"
             >
-              Technology
+              Subscribe
             </Link>
           </div>
         </div>
 
-        {/* Mobile navigation - shown on smaller screens */}
-        <div className="md:hidden pb-4">
-          <nav className="flex flex-wrap gap-2">
-            {categories.slice(0, 4).map((category) => (
+        {/* Navigation Categories */}
+        <div className="border-t border-border">
+          <nav className="flex items-center justify-center space-x-8 py-4">
+            {categories.slice(0, 5).map((category) => (
               <Link
                 key={category}
                 to={`/category/${category}`}
                 data-pendo={pendoIds.navCategory(category)}
-                className="text-xs font-medium text-foreground hover:text-primary px-2 py-1 rounded border border-border"
+                className="text-sm font-medium text-foreground hover:text-primary transition-colors uppercase tracking-wide"
               >
-                {category}
+                {category === 'U.S.' ? 'WORLD' : category.toUpperCase()}
               </Link>
             ))}
           </nav>
