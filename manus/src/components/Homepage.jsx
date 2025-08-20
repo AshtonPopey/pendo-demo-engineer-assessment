@@ -60,11 +60,11 @@ const Homepage = () => {
               />
             </div>
           </div>
-          
+
           <div className="text-2xl font-bold text-gray-800">
             Logo
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <button className="text-gray-600 hover:text-gray-800">
               Sign in
@@ -99,7 +99,19 @@ const Homepage = () => {
               <div className="p-4">
                 <div className="text-xs text-gray-500 mb-2">{articles[0].category}</div>
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article" className="hover:text-gray-600">
+                  <Link to="/article"
+                  className="hover:text-gray-600"
+                  data-pendo-feature-id="article-link"
+                  onClick={() =>
+                    window.pendo?.track?.("article_click", {
+                      id: article.id,             // unique id if you have one
+                      title: article.title,       // article title
+                      description: article.summary || "No summary available", // 👈 add description
+                      surface: "homepage-list",   // label where the click came from
+                      clickedAt: new Date().toISOString() // 👈 explicit timestamp if you want
+                    })
+                  }
+                >
                     {articles[0].title}
                   </Link>
                 </h3>
@@ -209,4 +221,3 @@ const Homepage = () => {
 }
 
 export default Homepage
-

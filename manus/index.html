@@ -5,6 +5,46 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>News Website</title>
+
+    <!-- Pendo Install Script -->
+    <script>
+      (function(apiKey){
+        // Loader
+        (function(p,e,n,d,o){
+          var v,w,x,y,z; o=p[d]=p[d]||{}; o._q=o._q||[];
+          v=['initialize','identify','updateOptions','pageLoad','track'];
+          for(w=0,x=v.length; w<x; ++w){
+            (function(m){
+              o[m]=o[m]||function(){
+                o._q[m==='initialize'?'unshift':'push']([m].concat([].slice.call(arguments,0)));
+              };
+            })(v[w]);
+          }
+          y=e.createElement(n); y.async=true;
+          y.src='https://cdn.pendo.io/agent/static/'+apiKey+'/pendo.js';
+          z=e.getElementsByTagName(n)[0]; z.parentNode.insertBefore(y,z);
+        })(window,document,'script','pendo');
+
+        // Persistent visitor id
+        var id = localStorage.getItem('visitorId');
+        if (!id) {
+          id = 'visitor_' + Math.random().toString(36).slice(2,10);
+          localStorage.setItem('visitorId', id);
+        }
+
+        // Initialize (minimum viable)
+        pendo.initialize({
+          visitor: {
+            id: id,
+            role: 'anonymous',
+            locale: navigator.language || 'en-US'
+          },
+          account: { id: 'demo-news' }
+        });
+      })('0efd76c7-359c-4fda-94d0-3f009af07a69');
+    </script>
+    <!-- End Pendo Install Script -->
+
   </head>
   <body>
     <div id="root"></div>

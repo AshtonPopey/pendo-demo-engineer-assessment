@@ -3,7 +3,7 @@ import { Search, Twitter, Facebook, Linkedin } from 'lucide-react'
 
 const Category = () => {
   const { categoryName } = useParams()
-  
+
   const categoryInfo = {
     culture: {
       title: "Culture",
@@ -47,11 +47,11 @@ const Category = () => {
               />
             </div>
           </div>
-          
+
           <div className="text-2xl font-bold text-gray-800">
             <Link to="/">Logo</Link>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <button className="text-gray-600 hover:text-gray-800">
               Sign in
@@ -68,26 +68,26 @@ const Category = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center space-x-12 py-4">
             <Link to="/" className="text-gray-600 hover:text-gray-800">LATEST</Link>
-            <Link 
-              to="/category/world" 
+            <Link
+              to="/category/world"
               className={`hover:text-gray-800 ${categoryName === 'world' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               WORLD
             </Link>
-            <Link 
-              to="/category/sports" 
+            <Link
+              to="/category/sports"
               className={`hover:text-gray-800 ${categoryName === 'sports' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               SPORTS
             </Link>
-            <Link 
-              to="/category/culture" 
+            <Link
+              to="/category/culture"
               className={`hover:text-gray-800 ${categoryName === 'culture' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               CULTURE
             </Link>
-            <Link 
-              to="/category/economy" 
+            <Link
+              to="/category/economy"
               className={`hover:text-gray-800 ${categoryName === 'economy' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               ECONOMY
@@ -113,9 +113,22 @@ const Category = () => {
               <div className="h-48 bg-gray-300"></div>
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article" className="hover:text-gray-600">
-                    {article.title}
-                  </Link>
+                <Link
+                  to="/article"
+                  className="hover:text-gray-600"
+                  data-pendo-feature-id="article-link"
+                  onClick={() =>
+                    window.pendo?.track?.("article_click", {
+                      id: article.id,             // unique id if you have one
+                      title: article.title,       // article title
+                      description: article.summary || "No summary available", // 👈 add description
+                      surface: "homepage-list",   // label where the click came from
+                      clickedAt: new Date().toISOString() // 👈 explicit timestamp if you want
+                    })
+                  }
+                >
+                  {article.title}
+                </Link>
                 </h3>
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>{article.author}</span>
@@ -159,4 +172,3 @@ const Category = () => {
 }
 
 export default Category
-
