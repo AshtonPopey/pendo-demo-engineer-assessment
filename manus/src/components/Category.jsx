@@ -122,7 +122,7 @@ const Category = () => {
                       id: article.id,             // unique id if you have one
                       title: article.title,       // article title
                       description: article.summary || "No summary available", // 👈 add description
-                      surface: "homepage-list",   // label where the click came from
+                      surface: "category-articles-list",   // label where the click came from
                       clickedAt: new Date().toISOString() // 👈 explicit timestamp if you want
                     })
                   }
