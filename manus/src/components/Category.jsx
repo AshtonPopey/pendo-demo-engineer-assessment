@@ -67,27 +67,31 @@ const Category = () => {
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center space-x-12 py-4">
-            <Link to="/" className="text-gray-600 hover:text-gray-800">LATEST</Link>
+            <Link to="/" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">LATEST</Link>
             <Link
               to="/category/world"
+              data-pendo-feature-id="category-link"
               className={`hover:text-gray-800 ${categoryName === 'world' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               WORLD
             </Link>
             <Link
               to="/category/sports"
+              data-pendo-feature-id="category-link"
               className={`hover:text-gray-800 ${categoryName === 'sports' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               SPORTS
             </Link>
             <Link
               to="/category/culture"
+              data-pendo-feature-id="category-link"
               className={`hover:text-gray-800 ${categoryName === 'culture' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               CULTURE
             </Link>
             <Link
               to="/category/economy"
+              data-pendo-feature-id="category-link"
               className={`hover:text-gray-800 ${categoryName === 'economy' ? 'text-gray-800 font-medium' : 'text-gray-600'}`}
             >
               ECONOMY
