@@ -1,6 +1,26 @@
 import { Link } from 'react-router-dom'
 import { Search, Twitter, Facebook, Linkedin } from 'lucide-react'
 
+// ---- Tiny safe tracking helpers ----
+function safeTrack(name, props = {}) {
+  try {
+    if (window.pendo && typeof window.pendo.track === 'function') {
+      window.pendo.track(name, props)
+    }
+  } catch {
+    /* no-op */
+  }
+}
+function makeArticlePayload(a, surface) {
+  return {
+    id: a?.id ?? 'unknown',
+    title: a?.title ?? 'unknown',
+    description: a?.excerpt ?? a?.summary ?? 'No summary available',
+    surface,
+    clickedAt: new Date().toISOString(),
+  }
+}
+
 const Homepage = () => {
   const articles = [
     {
@@ -9,7 +29,8 @@ const Homepage = () => {
       author: "TOM JERRY",
       date: "13 June 2023",
       category: "NEWS",
-      image: "/api/placeholder/300/200"
+      image: "/api/placeholder/300/200",
+      summary: "A short teaser…",
     },
     {
       id: 2,
@@ -17,7 +38,8 @@ const Homepage = () => {
       author: "FRED BALLER",
       date: "14 June 2023",
       category: "SPORTS",
-      image: "/api/placeholder/300/200"
+      image: "/api/placeholder/300/200",
+      summary: "A short teaser…",
     },
     {
       id: 3,
@@ -25,7 +47,8 @@ const Homepage = () => {
       author: "TOM JERRY",
       date: "13 June 2023",
       category: "NEWS",
-      image: "/api/placeholder/300/200"
+      image: "/api/placeholder/300/200",
+      summary: "A short teaser…",
     },
     {
       id: 4,
@@ -33,13 +56,16 @@ const Homepage = () => {
       author: "TOM JERRY",
       date: "13 June 2023",
       category: "NEWS",
-      image: "/api/placeholder/300/200"
+      image: "/api/placeholder/300/200",
+      summary: "A short teaser…",
     }
   ]
 
   const featuredArticle = {
+    id: 'featured',
     title: "Lost cat found the way back to her home",
-    excerpt: "Summer is the perfect time to indulge in some leisurely reading, whether it's lying on the beach or lounging in the park. So if you're looking for a way to unwind this summer, why not pick up a few books and get lost in some captivating stories?",
+    excerpt:
+      "Summer is the perfect time to indulge in some leisurely reading, whether it's lying on the beach or lounging in the park. So if you're looking for a way to unwind this summer, why not pick up a few books and get lost in some captivating stories?",
     author: "TOM JERRY",
     date: "13 June 2023",
     category: "CULTURE"
@@ -80,11 +106,46 @@ const Homepage = () => {
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center space-x-12 py-4">
-            <Link to="/" data-pendo-feature-id="category-link" className="text-gray-800 font-medium hover:text-gray-600">LATEST</Link>
-            <Link to="/category/world" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">WORLD</Link>
-            <Link to="/category/sports" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">SPORTS</Link>
-            <Link to="/category/culture" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">CULTURE</Link>
-            <Link to="/category/economy" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">ECONOMY</Link>
+            <Link
+              to="/"
+              data-pendo-feature-id="category-link"
+              className="text-gray-800 font-medium hover:text-gray-600"
+              onClick={() => safeTrack('category_click', { name: 'LATEST', surface: 'homepage-nav', clickedAt: new Date().toISOString() })}
+            >
+              LATEST
+            </Link>
+            <Link
+              to="/category/world"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => safeTrack('category_click', { name: 'WORLD', surface: 'homepage-nav', clickedAt: new Date().toISOString() })}
+            >
+              WORLD
+            </Link>
+            <Link
+              to="/category/sports"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => safeTrack('category_click', { name: 'SPORTS', surface: 'homepage-nav', clickedAt: new Date().toISOString() })}
+            >
+              SPORTS
+            </Link>
+            <Link
+              to="/category/culture"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => safeTrack('category_click', { name: 'CULTURE', surface: 'homepage-nav', clickedAt: new Date().toISOString() })}
+            >
+              CULTURE
+            </Link>
+            <Link
+              to="/category/economy"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => safeTrack('category_click', { name: 'ECONOMY', surface: 'homepage-nav', clickedAt: new Date().toISOString() })}
+            >
+              ECONOMY
+            </Link>
           </div>
         </div>
       </nav>
@@ -99,19 +160,12 @@ const Homepage = () => {
               <div className="p-4">
                 <div className="text-xs text-gray-500 mb-2">{articles[0].category}</div>
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article"
-                  className="hover:text-gray-600"
-                  data-pendo-feature-id="article-link"
-                  onClick={() =>
-                    window.pendo?.track?.("article_click", {
-                      id: article.id,             // unique id if you have one
-                      title: article.title,       // article title
-                      description: article.summary || "No summary available", // 👈 add description
-                      surface: "homepage-list",   // label where the click came from
-                      clickedAt: new Date().toISOString() // 👈 explicit timestamp if you want
-                    })
-                  }
-                >
+                  <Link
+                    to="/article"
+                    className="hover:text-gray-600"
+                    data-pendo-feature-id="article-link"
+                    onClick={() => safeTrack('article_click', makeArticlePayload(articles[0], 'homepage-left-top'))}
+                  >
                     {articles[0].title}
                   </Link>
                 </h3>
@@ -127,7 +181,12 @@ const Homepage = () => {
               <div className="p-4">
                 <div className="text-xs text-gray-500 mb-2">{articles[2].category}</div>
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article" className="hover:text-gray-600">
+                  <Link
+                    to="/article"
+                    className="hover:text-gray-600"
+                    data-pendo-feature-id="article-link"
+                    onClick={() => safeTrack('article_click', makeArticlePayload(articles[2], 'homepage-left-bottom'))}
+                  >
                     {articles[2].title}
                   </Link>
                 </h3>
@@ -145,7 +204,12 @@ const Homepage = () => {
             <div className="p-6">
               <div className="text-xs text-gray-500 mb-2">{featuredArticle.category}</div>
               <h2 className="font-bold text-2xl mb-4">
-                <Link to="/article" className="hover:text-gray-600">
+                <Link
+                  to="/article"
+                  className="hover:text-gray-600"
+                  data-pendo-feature-id="article-link"
+                  onClick={() => safeTrack('article_click', makeArticlePayload(featuredArticle, 'homepage-featured'))}
+                >
                   {featuredArticle.title}
                 </Link>
               </h2>
@@ -166,7 +230,12 @@ const Homepage = () => {
               <div className="p-4">
                 <div className="text-xs text-gray-500 mb-2">{articles[1].category}</div>
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article" className="hover:text-gray-600">
+                  <Link
+                    to="/article"
+                    className="hover:text-gray-600"
+                    data-pendo-feature-id="article-link"
+                    onClick={() => safeTrack('article_click', makeArticlePayload(articles[1], 'homepage-right-top'))}
+                  >
                     {articles[1].title}
                   </Link>
                 </h3>
@@ -182,7 +251,12 @@ const Homepage = () => {
               <div className="p-4">
                 <div className="text-xs text-gray-500 mb-2">{articles[3].category}</div>
                 <h3 className="font-bold text-lg mb-2">
-                  <Link to="/article" className="hover:text-gray-600">
+                  <Link
+                    to="/article"
+                    className="hover:text-gray-600"
+                    data-pendo-feature-id="article-link"
+                    onClick={() => safeTrack('article_click', makeArticlePayload(articles[3], 'homepage-right-bottom'))}
+                  >
                     {articles[3].title}
                   </Link>
                 </h3>

@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom'
 import { Search, Twitter, Facebook, Linkedin, Instagram, ThumbsUp, ThumbsDown } from 'lucide-react'
 
+// Small helper so analytics never break the UI
+function safeTrack(name, props = {}) {
+  try {
+    if (window.pendo && typeof window.pendo.track === 'function') {
+      window.pendo.track(name, props)
+    }
+  } catch {
+    /* no-op */
+  }
+}
+
 const Article = () => {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -19,13 +30,23 @@ const Article = () => {
           </div>
 
           <div className="text-2xl font-bold text-gray-800">
-            <Link to="/">Logo</Link>
+            <Link
+              to="/"
+              data-pendo-feature-id="logo-link"
+              onClick={() =>
+                safeTrack('nav_click', {
+                  target: 'logo',
+                  surface: 'article-header',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              Logo
+            </Link>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-800">
-              Sign in
-            </button>
+            <button className="text-gray-600 hover:text-gray-800">Sign in</button>
             <button className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
               Subscribe
             </button>
@@ -37,11 +58,76 @@ const Article = () => {
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center space-x-12 py-4">
-            <Link to="/" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">LATEST</Link>
-            <Link to="/category/world" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">WORLD</Link>
-            <Link to="/category/sports" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">SPORTS</Link>
-            <Link to="/category/culture" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">CULTURE</Link>
-            <Link to="/category/economy" data-pendo-feature-id="category-link" className="text-gray-600 hover:text-gray-800">ECONOMY</Link>
+            <Link
+              to="/"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() =>
+                safeTrack('category_click', {
+                  name: 'LATEST',
+                  surface: 'article-nav',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              LATEST
+            </Link>
+            <Link
+              to="/category/world"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() =>
+                safeTrack('category_click', {
+                  name: 'WORLD',
+                  surface: 'article-nav',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              WORLD
+            </Link>
+            <Link
+              to="/category/sports"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() =>
+                safeTrack('category_click', {
+                  name: 'SPORTS',
+                  surface: 'article-nav',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              SPORTS
+            </Link>
+            <Link
+              to="/category/culture"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() =>
+                safeTrack('category_click', {
+                  name: 'CULTURE',
+                  surface: 'article-nav',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              CULTURE
+            </Link>
+            <Link
+              to="/category/economy"
+              data-pendo-feature-id="category-link"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() =>
+                safeTrack('category_click', {
+                  name: 'ECONOMY',
+                  surface: 'article-nav',
+                  clickedAt: new Date().toISOString(),
+                })
+              }
+            >
+              ECONOMY
+            </Link>
           </div>
         </div>
       </nav>
@@ -64,10 +150,26 @@ const Article = () => {
                 <div>13 June 2023</div>
               </div>
               <div className="flex space-x-3">
-                <Twitter className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer" />
-                <Facebook className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer" />
-                <Instagram className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer" />
-                <Linkedin className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer" />
+                <Twitter
+                  className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer"
+                  data-pendo-feature-id="share-twitter"
+                  onClick={() => safeTrack('share_click', { network: 'twitter', surface: 'article-header' })}
+                />
+                <Facebook
+                  className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer"
+                  data-pendo-feature-id="share-facebook"
+                  onClick={() => safeTrack('share_click', { network: 'facebook', surface: 'article-header' })}
+                />
+                <Instagram
+                  className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer"
+                  data-pendo-feature-id="share-instagram"
+                  onClick={() => safeTrack('share_click', { network: 'instagram', surface: 'article-header' })}
+                />
+                <Linkedin
+                  className="w-5 h-5 text-gray-600 hover:text-gray-800 cursor-pointer"
+                  data-pendo-feature-id="share-linkedin"
+                  onClick={() => safeTrack('share_click', { network: 'linkedin', surface: 'article-header' })}
+                />
               </div>
             </div>
           </div>
@@ -109,14 +211,22 @@ const Article = () => {
                 <div className="flex-1">
                   <div className="text-sm text-gray-600 mb-1">Can I have happy ending?</div>
                   <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
+                    <button
+                      className="flex items-center space-x-1"
+                      data-pendo-feature-id="comment-like"
+                      onClick={() => safeTrack('comment_react', { type: 'like', surface: 'article-comments' })}
+                    >
                       <ThumbsUp className="w-4 h-4 text-gray-400" />
                       <span className="text-xs text-gray-500">0</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
+                    </button>
+                    <button
+                      className="flex items-center space-x-1"
+                      data-pendo-feature-id="comment-dislike"
+                      onClick={() => safeTrack('comment_react', { type: 'dislike', surface: 'article-comments' })}
+                    >
                       <ThumbsDown className="w-4 h-4 text-gray-400" />
                       <span className="text-xs text-gray-500">0</span>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -126,14 +236,22 @@ const Article = () => {
                 <div className="flex-1">
                   <div className="text-sm text-gray-600 mb-1">Cute cat</div>
                   <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-1">
+                    <button
+                      className="flex items-center space-x-1"
+                      data-pendo-feature-id="comment-like"
+                      onClick={() => safeTrack('comment_react', { type: 'like', surface: 'article-comments' })}
+                    >
                       <ThumbsUp className="w-4 h-4 text-gray-400" />
                       <span className="text-xs text-gray-500">0</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
+                    </button>
+                    <button
+                      className="flex items-center space-x-1"
+                      data-pendo-feature-id="comment-dislike"
+                      onClick={() => safeTrack('comment_react', { type: 'dislike', surface: 'article-comments' })}
+                    >
                       <ThumbsDown className="w-4 h-4 text-gray-400" />
                       <span className="text-xs text-gray-500">0</span>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>

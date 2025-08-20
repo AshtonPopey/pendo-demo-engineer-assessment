@@ -7,19 +7,23 @@ const Category = () => {
   const categoryInfo = {
     culture: {
       title: "Culture",
-      description: "Welcome to the cultural section of our news, where we explore the latest trends and topics in art, music, film, literature, and more. From groundbreaking exhibitions and performances to up-and-coming artists and cultural events, we aim to provide you with a diverse range of stories that showcase the richness and diversity of our world's creative landscape."
+      description:
+        "Welcome to the cultural section of our news, where we explore the latest trends and topics in art, music, film, literature, and more. From groundbreaking exhibitions and performances to up-and-coming artists and cultural events, we aim to provide you with a diverse range of stories that showcase the richness and diversity of our world's creative landscape."
     },
     world: {
       title: "World",
-      description: "Stay informed about global events and international news from around the world. Our comprehensive coverage brings you the latest developments in politics, economics, and society from every continent."
+      description:
+        "Stay informed about global events and international news from around the world. Our comprehensive coverage brings you the latest developments in politics, economics, and society from every continent."
     },
     sports: {
       title: "Sports",
-      description: "Get the latest sports news, scores, and analysis from around the world. From professional leagues to amateur competitions, we cover all the action that matters to sports fans."
+      description:
+        "Get the latest sports news, scores, and analysis from around the world. From professional leagues to amateur competitions, we cover all the action that matters to sports fans."
     },
     economy: {
       title: "Economy",
-      description: "Follow the latest economic trends, market analysis, and financial news that affects businesses and consumers worldwide. Stay informed about the forces shaping our global economy."
+      description:
+        "Follow the latest economic trends, market analysis, and financial news that affects businesses and consumers worldwide. Stay informed about the forces shaping our global economy."
     }
   }
 
@@ -29,8 +33,18 @@ const Category = () => {
     id: index + 1,
     title: "Lost cat found the way back to her home",
     author: "TOM JERRY",
-    date: "13 June 2023"
+    date: "13 June 2023",
+    summary: "Short summary text to tease the article."
   }))
+
+  // tiny helper so tracking never crashes the UI
+  function safeTrack(name, props = {}) {
+    try {
+      if (window.pendo && typeof window.pendo.track === 'function') {
+        window.pendo.track(name, props)
+      }
+    } catch { /* no-op */ }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -39,7 +53,7 @@ const Category = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
                 placeholder="Search"
@@ -53,12 +67,8 @@ const Category = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-800">
-              Sign in
-            </button>
-            <button className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
-              Subscribe
-            </button>
+            <button className="text-gray-600 hover:text-gray-800">Sign in</button>
+            <button className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">Subscribe</button>
           </div>
         </div>
       </header>
@@ -112,31 +122,31 @@ const Category = () => {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {articles.map((article) => (
-            <article key={article.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+          {articles.map((a) => (
+            <article key={a.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
               <div className="h-48 bg-gray-300"></div>
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">
-                <Link
-                  to="/article"
-                  className="hover:text-gray-600"
-                  data-pendo-feature-id="article-link"
-                  onClick={() =>
-                    window.pendo?.track?.("article_click", {
-                      id: article.id,             // unique id if you have one
-                      title: article.title,       // article title
-                      description: article.summary || "No summary available", // 👈 add description
-                      surface: "category-articles-list",   // label where the click came from
-                      clickedAt: new Date().toISOString() // 👈 explicit timestamp if you want
-                    })
-                  }
-                >
-                  {article.title}
-                </Link>
+                  <Link
+                    to="/article"
+                    className="hover:text-gray-600"
+                    data-pendo-feature-id="article-link"
+                    onClick={() =>
+                      safeTrack("article_click", {
+                        id: a?.id ?? "unknown",
+                        title: a?.title ?? "unknown",
+                        description: a?.summary ?? "No summary available",
+                        surface: "category-articles-list",
+                        clickedAt: new Date().toISOString()
+                      })
+                    }
+                  >
+                    {a?.title ?? "Untitled"}
+                  </Link>
                 </h3>
                 <div className="flex justify-between text-xs text-gray-500">
-                  <span>{article.author}</span>
-                  <span>{article.date}</span>
+                  <span>{a?.author ?? "Unknown Author"}</span>
+                  <span>{a?.date ?? "Unknown Date"}</span>
                 </div>
               </div>
             </article>
